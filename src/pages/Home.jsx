@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getUnits } from '../services/unitService'
 import { useUnit } from '../contexts/UnitContext'
+import { useCart } from '../contexts/CartContext'
 import './Home.css'
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
   const [error, setError] = useState(null)
   const [reload, setReload] = useState(0)
   const { unit: selectedUnit, selectUnit } = useUnit()
+  const { items, unitId: cartUnitId, clearCart } = useCart()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -38,6 +40,13 @@ export default function Home() {
   }
 
   function handleSelect(unit) {
+    if (items.length > 0 && cartUnitId !== unit.id) {
+      const confirmed = window.confirm(
+        'Seu carrinho tem itens de outra unidade. Ao trocar de unidade o carrinho será esvaziado. Deseja continuar?',
+      )
+      if (!confirmed) return
+      clearCart()
+    }
     selectUnit(unit)
     navigate('/cardapio')
   }

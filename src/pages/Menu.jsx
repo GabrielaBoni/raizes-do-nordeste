@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getMenuByUnit } from '../services/menuService'
 import { useUnit } from '../contexts/UnitContext'
+import { useCart } from '../contexts/CartContext'
 import { formatPrice } from '../utils/format'
 import './Menu.css'
 
 export default function Menu() {
   const { unit } = useUnit()
+  const { addItem, decreaseItem, getQuantity, totalItems, subtotal } = useCart()
   const [menu, setMenu] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -131,11 +133,36 @@ export default function Menu() {
                   <p className="muted">{item.description}</p>
                   <div className="product-footer">
                     <strong>{formatPrice(item.price)}</strong>
-                    {!item.available && <span className="tag tag-unavailable">Esgotado nesta unidade</span>}
+                    {!item.available ? (
+                      <span className="tag tag-unavailable">Esgotado nesta unidade</span>
+                    ) : getQuantity(item.id) > 0 ? (
+                      <div className="qty-control">
+                        <button onClick={() => decreaseItem(item.id)} aria-label={`Diminuir ${item.name}`}>
+                          −
+                        </button>
+                        <span>{getQuantity(item.id)}</span>
+                        <button onClick={() => addItem(item, unit.id)} aria-label={`Aumentar ${item.name}`}>
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button className="btn btn-small" onClick={() => addItem(item, unit.id)}>
+                        Adicionar
+                      </button>
+                    )}
                   </div>
                 </li>
               ))}
             </ul>
+          )}
+
+          {totalItems > 0 && (
+            <Link to="/carrinho" className="cart-bar">
+              <span>
+                Ver carrinho ({totalItems} {totalItems === 1 ? 'item' : 'itens'})
+              </span>
+              <strong>{formatPrice(subtotal)}</strong>
+            </Link>
           )}
         </>
       )}

@@ -1,4 +1,5 @@
 import { NavLink, Outlet, Link } from 'react-router-dom'
+import { useCart } from '../contexts/CartContext'
 import './MainLayout.css'
 
 const navItems = [
@@ -10,6 +11,8 @@ const navItems = [
 ]
 
 export default function MainLayout() {
+  const { totalItems } = useCart()
+
   return (
     <div className="layout">
       <header className="layout-header">
@@ -20,6 +23,7 @@ export default function MainLayout() {
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} end={item.to === '/'}>
               {item.label}
+              {item.to === '/carrinho' && totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
             </NavLink>
           ))}
         </nav>
@@ -32,7 +36,10 @@ export default function MainLayout() {
       <nav className="nav-mobile">
         {navItems.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.to === '/'}>
-            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-icon">
+              {item.icon}
+              {item.to === '/carrinho' && totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+            </span>
             <span>{item.label}</span>
           </NavLink>
         ))}

@@ -122,3 +122,41 @@ button {
   color: var(--color-error);
   margin-top: 0;
 }
+
+.btn-small {
+  padding: 8px 14px;
+  font-size: 0.9rem;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-error);
+  text-decoration: underline;
+  font-size: 0.9rem;
+}
+
+.qty-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+}
+
+.qty-control button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.qty-control span {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 600;
+}
