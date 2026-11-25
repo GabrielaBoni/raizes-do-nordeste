@@ -33,3 +33,12 @@ const dateTime = new Intl.DateTimeFormat('pt-BR', {
 export function formatDateTime(isoDate) {
   return dateTime.format(new Date(isoDate))
 }
+
+const time = new Intl.DateTimeFormat('pt-BR', {
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
+export function formatTime(value) {
+  return time.format(new Date(value))
+}

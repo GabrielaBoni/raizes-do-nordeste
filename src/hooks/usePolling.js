@@ -34,5 +34,5 @@ export function usePolling(fetcher, interval = 5000) {
     }
   }, [fetcher, interval])
 
-  return { data, loading, error }
+  return { data, setData, loading, error }
 }

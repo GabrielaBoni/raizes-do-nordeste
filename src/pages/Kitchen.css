@@ -1,0 +1,262 @@
+.kitchen {
+  min-height: 100vh;
+  background: #f3ece3;
+}
+
+.kitchen-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px var(--space);
+  background: var(--color-text);
+  color: #fff;
+}
+
+.kitchen-header h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.kitchen-header p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.kitchen-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kitchen-header select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  font: inherit;
+}
+
+.kitchen-exit {
+  color: #fff;
+  font-weight: 600;
+}
+
+.kitchen-alert {
+  margin: var(--space);
+  padding: 12px;
+  border-radius: var(--radius);
+  background: #f9e1df;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.kitchen-loading {
+  padding: var(--space);
+  color: var(--color-muted);
+}
+
+.kitchen-tabs {
+  display: flex;
+  gap: 8px;
+  padding: var(--space) var(--space) 0;
+}
+
+.kitchen-tabs button {
+  flex: 1;
+  padding: 10px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.kitchen-tabs button.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.kitchen-board {
+  padding: var(--space);
+}
+
+.kitchen-column {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kitchen-column.visible {
+  display: flex;
+}
+
+.kitchen-column h2 {
+  display: none;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.column-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--color-text);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.column-empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--color-muted);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.kitchen-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 5px solid var(--state-color);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  --state-color: var(--color-muted);
+  --state-bg: #f4ece2;
+  --state-text: var(--color-text);
+}
+
+.kitchen-card.state-ok {
+  --state-color: #8c7b6a;
+}
+
+.kitchen-card.state-warning {
+  --state-color: var(--color-secondary);
+  --state-bg: #fdf0d9;
+  --state-text: #8a5a12;
+}
+
+.kitchen-card.state-late {
+  --state-color: var(--color-error);
+  --state-bg: #f9e1df;
+  --state-text: var(--color-error);
+}
+
+.kitchen-card.state-ready {
+  --state-color: var(--color-success);
+  --state-bg: #e3f1e8;
+  --state-text: var(--color-success);
+}
+
+.kitchen-card-timing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--state-bg);
+  color: var(--state-text);
+  font-size: 0.85rem;
+}
+
+.kitchen-card-timing strong {
+  white-space: nowrap;
+}
+
+.kitchen-card-body {
+  padding: 12px 14px 14px;
+}
+
+.column-late,
+.tab-late {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-error);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.tab-late {
+  display: block;
+  width: fit-content;
+  margin: 4px auto 0;
+}
+
+.kitchen-tabs button.active .tab-late {
+  background: #fff;
+  color: var(--color-error);
+}
+
+.kitchen-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem;
+}
+
+.kitchen-channel {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eee8e1;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.kitchen-customer {
+  margin: 4px 0 8px;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.kitchen-items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+.kitchen-items li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.kitchen-items li:last-child {
+  border-bottom: none;
+}
+
+.kitchen-action {
+  width: 100%;
+  padding: 14px;
+}
+
+@media (min-width: 900px) {
+  .kitchen-tabs {
+    display: none;
+  }
+
+  .kitchen-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space);
+    align-items: start;
+  }
+
+  .kitchen-column {
+    display: flex;
+  }
+
+  .kitchen-column h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}

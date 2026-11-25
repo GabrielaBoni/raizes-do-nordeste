@@ -83,3 +83,39 @@ export function getOrderById(orderId) {
     return order
   })
 }
+
+const allowedTransitions = {
+  recebido: ['em_preparo'],
+  em_preparo: ['pronto'],
+  pronto: ['retirado'],
+}
+
+export function getKitchenOrders(unitId) {
+  return simulateRequest(() =>
+    loadOrders()
+      .filter((o) => o.unitId === unitId && allowedTransitions[o.status])
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
+  )
+}
+
+export function updateOrderStatus(orderId, newStatus) {
+  return simulateRequest(() => {
+    const orders = loadOrders()
+    const order = orders.find((o) => o.id === orderId)
+    if (!order) {
+      throw new ApiError('Pedido não encontrado', 404)
+    }
+    if (!allowedTransitions[order.status]?.includes(newStatus)) {
+      throw new ApiError('Mudança de status não permitida', 409)
+    }
+
+    const updated = {
+      ...order,
+      status: newStatus,
+      history: [...order.history, { status: newStatus, at: new Date().toISOString() }],
+    }
+
+    saveOrders(orders.map((o) => (o.id === orderId ? updated : o)))
+    return updated
+  })
+}
