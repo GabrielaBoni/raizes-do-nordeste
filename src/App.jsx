@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import Menu from './pages/Menu'
 import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
 import Profile from './pages/Profile'
 import Totem from './pages/Totem'
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cardapio" element={<Menu />} />
           <Route path="/carrinho" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/pedidos" element={<Orders />} />
           <Route path="/perfil" element={<Profile />} />
         </Route>

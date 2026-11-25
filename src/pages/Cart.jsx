@@ -65,6 +65,9 @@ export default function Cart() {
             <span>Total</span>
             <strong>{formatPrice(subtotal)}</strong>
           </div>
+          <Link to="/checkout" className="btn">
+            Finalizar pedido
+          </Link>
           <Link to="/cardapio" className="btn btn-outline">
             Continuar comprando
           </Link>
