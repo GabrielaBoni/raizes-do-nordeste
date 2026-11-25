@@ -22,3 +22,14 @@ export function formatExpiry(value) {
   if (digits.length <= 2) return digits
   return `${digits.slice(0, 2)}/${digits.slice(2)}`
 }
+
+const dateTime = new Intl.DateTimeFormat('pt-BR', {
+  day: '2-digit',
+  month: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
+export function formatDateTime(isoDate) {
+  return dateTime.format(new Date(isoDate))
+}

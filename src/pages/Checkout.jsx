@@ -160,7 +160,7 @@ export default function Checkout() {
             pronto.
           </p>
           <div className="result-actions">
-            <Link to="/pedidos" className="btn">
+            <Link to={`/pedidos/${order.id}`} className="btn">
               Acompanhar pedido
             </Link>
             <Link to="/" className="btn btn-outline">

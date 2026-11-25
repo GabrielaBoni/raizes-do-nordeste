@@ -69,3 +69,17 @@ export function registerPayment(orderId, payment) {
     return updated
   })
 }
+
+export function getOrders() {
+  return simulateRequest(() => loadOrders())
+}
+
+export function getOrderById(orderId) {
+  return simulateRequest(() => {
+    const order = loadOrders().find((o) => o.id === orderId)
+    if (!order) {
+      throw new ApiError('Pedido não encontrado', 404)
+    }
+    return order
+  })
+}

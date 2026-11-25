@@ -160,3 +160,28 @@ button {
   text-align: center;
   font-weight: 600;
 }
+
+.tag-status-info {
+  background: #e4ecf7;
+  color: #2a5596;
+}
+
+.tag-status-success {
+  background: #e3f1e8;
+  color: var(--color-success);
+}
+
+.tag-status-warning {
+  background: #fdf0d9;
+  color: #8a5a12;
+}
+
+.tag-status-error {
+  background: #f9e1df;
+  color: var(--color-error);
+}
+
+.tag-status-neutral {
+  background: #eee8e1;
+  color: var(--color-muted);
+}

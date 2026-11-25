@@ -5,6 +5,7 @@ import Menu from './pages/Menu'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
+import OrderDetail from './pages/OrderDetail'
 import Profile from './pages/Profile'
 import Totem from './pages/Totem'
 import Kitchen from './pages/Kitchen'
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/carrinho" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/pedidos" element={<Orders />} />
+          <Route path="/pedidos/:id" element={<OrderDetail />} />
           <Route path="/perfil" element={<Profile />} />
         </Route>
 
