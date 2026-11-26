@@ -35,7 +35,7 @@ export function createOrder({ unit, items, customer, channel = 'app' }) {
       unitId: unit.id,
       unitName: unit.name,
       channel,
-      customer: { name: customer.name },
+      customer: { name: customer.name, userId: customer.userId ?? null },
       items,
       total,
       status: 'aguardando_pagamento',

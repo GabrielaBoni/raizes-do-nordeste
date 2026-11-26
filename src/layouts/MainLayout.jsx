@@ -1,5 +1,6 @@
 import { NavLink, Outlet, Link } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
+import UserMenu from '../components/UserMenu'
 import './MainLayout.css'
 
 const navItems = [
@@ -27,10 +28,15 @@ export default function MainLayout() {
             </NavLink>
           ))}
         </nav>
+        <UserMenu />
       </header>
 
       <main className="layout-content">
         <Outlet />
+        <footer className="layout-footer">
+          <Link to="/privacidade">Política de Privacidade</Link>
+          <span>© 2026 Raízes do Nordeste</span>
+        </footer>
       </main>
 
       <nav className="nav-mobile">

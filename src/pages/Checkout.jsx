@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { useUnit } from '../contexts/UnitContext'
+import { useAuth } from '../contexts/AuthContext'
 import { createOrder, registerPayment } from '../services/orderService'
 import { requestPayment, generatePixCode } from '../services/paymentService'
 import { formatPrice, formatCardNumber, formatExpiry, onlyDigits } from '../utils/format'
@@ -58,7 +59,8 @@ const methodLabels = {
 export default function Checkout() {
   const { items, subtotal, clearCart } = useCart()
   const { unit } = useUnit()
-  const [form, setForm] = useState(initialForm)
+  const { user } = useAuth()
+  const [form, setForm] = useState(() => ({ ...initialForm, name: user ? user.name.split(' ')[0] : '' }))
   const [errors, setErrors] = useState({})
   const [step, setStep] = useState('form')
   const [order, setOrder] = useState(null)
@@ -84,7 +86,7 @@ export default function Checkout() {
     try {
       let currentOrder = order
       if (!currentOrder) {
-        currentOrder = await createOrder({ unit, items, customer: { name: form.name.trim() } })
+        currentOrder = await createOrder({ unit, items, customer: { name: form.name.trim(), userId: user?.id ?? null } })
         setOrder(currentOrder)
       }
 

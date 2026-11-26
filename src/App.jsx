@@ -10,6 +10,9 @@ import Profile from './pages/Profile'
 import Totem from './pages/Totem'
 import Kitchen from './pages/Kitchen'
 import NotFound from './pages/NotFound'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Privacy from './pages/Privacy'
 
 export default function App() {
   return (
@@ -23,6 +26,9 @@ export default function App() {
           <Route path="/pedidos" element={<Orders />} />
           <Route path="/pedidos/:id" element={<OrderDetail />} />
           <Route path="/perfil" element={<Profile />} />
+          <Route path="/entrar" element={<Login />} />
+          <Route path="/cadastro" element={<Register />} />
+          <Route path="/privacidade" element={<Privacy />} />
         </Route>
 
         <Route path="/totem" element={<Totem />} />

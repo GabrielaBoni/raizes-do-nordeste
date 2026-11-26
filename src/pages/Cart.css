@@ -13,6 +13,8 @@
   margin: 0;
   display: grid;
   gap: 12px;
+  align-self: start;
+  align-content: start;
 }
 
 .cart-item {
