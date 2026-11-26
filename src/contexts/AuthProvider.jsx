@@ -22,5 +22,30 @@ export default function AuthProvider({ children }) {
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ user, login, register, logout }}>{children}</AuthContext.Provider>
+  async function updateProfile(data) {
+    const updated = await authService.updateProfile(user.id, data)
+    setUser(updated)
+    return updated
+  }
+
+  async function updateConsents(changes) {
+    const updated = await authService.updateConsents(user.id, changes)
+    setUser(updated)
+    return updated
+  }
+
+  function exportData() {
+    return authService.exportUserData(user.id)
+  }
+
+  async function deleteAccount(password) {
+    await authService.deleteAccount(user.id, password)
+    setUser(null)
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, login, register, logout, updateProfile, updateConsents, exportData, deleteAccount }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }

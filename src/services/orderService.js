@@ -119,3 +119,14 @@ export function updateOrderStatus(orderId, newStatus) {
     return updated
   })
 }
+
+export function getOrdersByUser(userId) {
+  return loadOrders().filter((order) => order.customer?.userId === userId)
+}
+
+export function anonymizeUserOrders(userId) {
+  const orders = loadOrders().map((order) =>
+    order.customer?.userId === userId ? { ...order, customer: { name: 'Cliente removido', userId: null } } : order,
+  )
+  saveOrders(orders)
+}

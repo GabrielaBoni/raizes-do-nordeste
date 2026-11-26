@@ -1,4 +1,5 @@
 import { simulateRequest, ApiError } from './api'
+import { anonymizeUserOrders, getOrdersByUser } from './orderService'
 
 const USERS_KEY = 'raizes:usuarios'
 const SESSION_KEY = 'raizes:sessao'
@@ -20,6 +21,11 @@ const demoUser = {
     loyalty: { accepted: true, at: '2026-11-01T12:00:00.000Z' },
     marketing: { accepted: false, at: '2026-11-01T12:00:00.000Z' },
   },
+  consentHistory: [
+    { type: 'terms', accepted: true, at: '2026-11-01T12:00:00.000Z' },
+    { type: 'loyalty', accepted: true, at: '2026-11-01T12:00:00.000Z' },
+    { type: 'marketing', accepted: false, at: '2026-11-01T12:00:00.000Z' },
+  ],
 }
 
 function loadUsers() {
@@ -48,7 +54,20 @@ function toPublicUser(user) {
     birthDate: user.birthDate,
     createdAt: user.createdAt,
     consents: user.consents,
+    consentHistory: user.consentHistory ?? initialHistory(user.consents),
   }
+}
+
+function initialHistory(consents) {
+  return ['terms', 'loyalty', 'marketing']
+    .filter((type) => consents?.[type])
+    .map((type) => ({ type, accepted: consents[type].accepted, at: consents[type].at }))
+}
+
+function findUserIndex(users, userId) {
+  const index = users.findIndex((u) => u.id === userId)
+  if (index === -1) throw new ApiError('Conta não encontrada.', 404)
+  return index
 }
 
 function generateSalt() {
@@ -104,6 +123,11 @@ export async function register({ name, email, phone, birthDate, password, consen
         loyalty: { accepted: consents.loyalty, at: now },
         marketing: { accepted: consents.marketing, at: now },
       },
+      consentHistory: [
+        { type: 'terms', accepted: true, at: now },
+        { type: 'loyalty', accepted: consents.loyalty, at: now },
+        { type: 'marketing', accepted: consents.marketing, at: now },
+      ],
     }
 
     saveUsers([...users, user])
@@ -131,4 +155,82 @@ export function logout() {
   } catch {
     return
   }
+}
+
+export function updateProfile(userId, { name, phone }) {
+  return simulateRequest(() => {
+    if (name.trim().length < 3) throw new ApiError('Informe seu nome completo.', 400)
+    const users = loadUsers()
+    const index = findUserIndex(users, userId)
+    users[index] = { ...users[index], name: name.trim(), phone }
+    saveUsers(users)
+    return toPublicUser(users[index])
+  })
+}
+
+export function updateConsents(userId, changes) {
+  return simulateRequest(() => {
+    const users = loadUsers()
+    const index = findUserIndex(users, userId)
+    const user = users[index]
+    const now = new Date().toISOString()
+    const consents = { ...user.consents }
+    const history = [...(user.consentHistory ?? initialHistory(user.consents))]
+
+    for (const type of ['loyalty', 'marketing']) {
+      if (type in changes && changes[type] !== consents[type]?.accepted) {
+        consents[type] = { accepted: changes[type], at: now }
+        history.push({ type, accepted: changes[type], at: now })
+      }
+    }
+
+    users[index] = { ...user, consents, consentHistory: history }
+    saveUsers(users)
+    return toPublicUser(users[index])
+  })
+}
+
+export function exportUserData(userId) {
+  return simulateRequest(() => {
+    const users = loadUsers()
+    const user = users[findUserIndex(users, userId)]
+    const account = toPublicUser(user)
+    return {
+      exportedAt: new Date().toISOString(),
+      controller: 'Raízes do Nordeste',
+      account: {
+        id: account.id,
+        name: account.name,
+        email: account.email,
+        phone: account.phone,
+        birthDate: account.birthDate,
+        createdAt: account.createdAt,
+      },
+      consents: account.consents,
+      consentHistory: account.consentHistory,
+      orders: getOrdersByUser(userId).map((order) => ({
+        id: order.id,
+        createdAt: order.createdAt,
+        unit: order.unitName,
+        channel: order.channel,
+        status: order.status,
+        total: order.total,
+        items: order.items?.map((item) => ({ name: item.name, quantity: item.quantity, price: item.price })),
+      })),
+    }
+  })
+}
+
+export async function deleteAccount(userId, password) {
+  const user = loadUsers().find((u) => u.id === userId)
+  const passwordHash = user ? await hashPassword(user.salt, password) : null
+
+  return simulateRequest(() => {
+    if (!user) throw new ApiError('Conta não encontrada.', 404)
+    if (user.passwordHash !== passwordHash) throw new ApiError('Senha incorreta.', 401)
+    saveUsers(loadUsers().filter((u) => u.id !== userId))
+    anonymizeUserOrders(userId)
+    localStorage.removeItem(SESSION_KEY)
+    return { deleted: true }
+  })
 }
