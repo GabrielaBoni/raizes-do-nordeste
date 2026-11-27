@@ -6,6 +6,7 @@ import './MainLayout.css'
 const navItems = [
   { to: '/', label: 'Início', icon: '🏠' },
   { to: '/cardapio', label: 'Cardápio', icon: '📋' },
+  { to: '/promocoes', label: 'Promoções', icon: '🏷️' },
   { to: '/carrinho', label: 'Carrinho', icon: '🛒' },
   { to: '/pedidos', label: 'Pedidos', icon: '🧾' },
   { to: '/perfil', label: 'Perfil', icon: '👤' },

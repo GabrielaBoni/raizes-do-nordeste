@@ -1,5 +1,6 @@
 import { simulateRequest, ApiError } from './api'
 import { anonymizeUserOrders, getOrdersByUser } from './orderService'
+import { deleteLoyaltyAccount, getLoyaltyAccount } from './loyaltyService'
 
 const USERS_KEY = 'raizes:usuarios'
 const SESSION_KEY = 'raizes:sessao'
@@ -208,12 +209,15 @@ export function exportUserData(userId) {
       },
       consents: account.consents,
       consentHistory: account.consentHistory,
+      loyalty: getLoyaltyAccount(userId),
       orders: getOrdersByUser(userId).map((order) => ({
         id: order.id,
         createdAt: order.createdAt,
         unit: order.unitName,
         channel: order.channel,
         status: order.status,
+        subtotal: order.subtotal ?? order.total,
+        discounts: order.discounts ?? [],
         total: order.total,
         items: order.items?.map((item) => ({ name: item.name, quantity: item.quantity, price: item.price })),
       })),
@@ -230,6 +234,7 @@ export async function deleteAccount(userId, password) {
     if (user.passwordHash !== passwordHash) throw new ApiError('Senha incorreta.', 401)
     saveUsers(loadUsers().filter((u) => u.id !== userId))
     anonymizeUserOrders(userId)
+    deleteLoyaltyAccount(userId)
     localStorage.removeItem(SESSION_KEY)
     return { deleted: true }
   })

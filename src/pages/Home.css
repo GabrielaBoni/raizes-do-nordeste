@@ -66,3 +66,32 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.home-promo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: var(--space);
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: #fdf3e1;
+  border: 1px solid #f1d39a;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.home-promo > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-promo small {
+  color: var(--color-muted);
+}
+
+.home-promo > span:last-child {
+  font-size: 1.6rem;
+  color: var(--color-primary);
+}

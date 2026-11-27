@@ -263,3 +263,86 @@
     justify-content: center;
   }
 }
+
+.checkout-summary .summary-discount {
+  margin-top: 6px;
+}
+
+.checkout-summary > .summary-row:first-of-type {
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+  font-size: 0.9rem;
+}
+
+.checkout-coupon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 14px 0;
+}
+
+.coupon-form {
+  display: flex;
+  gap: 8px;
+}
+
+.coupon-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font: inherit;
+  text-transform: uppercase;
+}
+
+.coupon-form input[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.coupon-applied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px dashed var(--color-success);
+  border-radius: var(--radius);
+  background: #eef7f1;
+  font-size: 0.9rem;
+}
+
+.checkout-rewards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+.checkout-rewards legend {
+  padding: 0 4px;
+  font-weight: 600;
+}
+
+.reward-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reward-option.disabled {
+  color: var(--color-muted);
+}
+
+.checkout-points,
+.points-earned {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  background: #fdf3e1;
+  font-size: 0.88rem;
+}

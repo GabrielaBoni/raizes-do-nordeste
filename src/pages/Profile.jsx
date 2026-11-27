@@ -399,6 +399,15 @@ export default function Profile() {
       <h1>Olá, {user.name.split(' ')[0]}!</h1>
 
       <ProfileData user={user} onSave={updateProfile} />
+      <Link to="/fidelidade" className="card profile-loyalty-link">
+        <span>
+          <strong>⭐ Raízes+ Fidelidade</strong>
+          <small className="muted">
+            {user.consents.loyalty?.accepted ? 'Veja seus pontos, nível e recompensas' : 'Você ainda não participa. Saiba mais'}
+          </small>
+        </span>
+        <span aria-hidden="true">›</span>
+      </Link>
       <ConsentSettings user={user} onSave={updateConsents} />
       <DataRights onExport={exportData} onDelete={handleDelete} />
 

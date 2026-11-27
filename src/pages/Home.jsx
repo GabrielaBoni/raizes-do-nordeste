@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getUnits } from '../services/unitService'
+import { getCampaigns } from '../services/promotionService'
 import { useUnit } from '../contexts/UnitContext'
 import { useCart } from '../contexts/CartContext'
 import './Home.css'
@@ -51,12 +52,24 @@ export default function Home() {
     navigate('/cardapio')
   }
 
+  const highlight = getCampaigns().find((c) => c.status === 'active')
+
   return (
     <section>
       <div className="home-hero">
         <h1>Sabor do Nordeste, do jeito que você conhece</h1>
         <p>Escolha a unidade mais perto de você para ver o cardápio e fazer seu pedido.</p>
       </div>
+
+      {highlight && (
+        <Link to="/promocoes" className="home-promo">
+          <span>
+            <strong>🏷️ {highlight.title}</strong>
+            <small>{highlight.description} Veja todas as promoções e cupons.</small>
+          </span>
+          <span aria-hidden="true">›</span>
+        </Link>
+      )}
 
       <h2>Unidades</h2>
 

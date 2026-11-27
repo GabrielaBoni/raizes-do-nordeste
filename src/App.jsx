@@ -13,6 +13,8 @@ import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Privacy from './pages/Privacy'
+import Loyalty from './pages/Loyalty'
+import Promotions from './pages/Promotions'
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
           <Route path="/entrar" element={<Login />} />
           <Route path="/cadastro" element={<Register />} />
           <Route path="/privacidade" element={<Privacy />} />
+          <Route path="/fidelidade" element={<Loyalty />} />
+          <Route path="/promocoes" element={<Promotions />} />
         </Route>
 
         <Route path="/totem" element={<Totem />} />

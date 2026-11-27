@@ -64,6 +64,9 @@ export default function UserMenu() {
           <Link to="/pedidos" role="menuitem" onClick={() => setOpen(false)}>
             Meus pedidos
           </Link>
+          <Link to="/fidelidade" role="menuitem" onClick={() => setOpen(false)}>
+            Fidelidade
+          </Link>
           <button role="menuitem" className="user-menu-logout" onClick={handleLogout}>
             Sair
           </button>

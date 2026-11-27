@@ -4,6 +4,7 @@ import { getMenuByUnit } from '../services/menuService'
 import { useUnit } from '../contexts/UnitContext'
 import { useCart } from '../contexts/CartContext'
 import { formatPrice } from '../utils/format'
+import { getCategoryPromotions } from '../services/promotionService'
 import './Menu.css'
 
 export default function Menu() {
@@ -62,6 +63,7 @@ export default function Menu() {
     const matchSearch = !term || item.name.toLowerCase().includes(term)
     return matchCategory && matchSearch
   })
+  const promoByCategory = Object.fromEntries(getCategoryPromotions(unit).map((promo) => [promo.discount.category, promo]))
 
   return (
     <section>
@@ -129,6 +131,11 @@ export default function Menu() {
             <ul className="product-list">
               {items.map((item) => (
                 <li key={item.id} className={`card product-card ${item.available ? '' : 'unavailable'}`}>
+                  {promoByCategory[item.category] && (
+                    <span className="tag tag-promo">
+                      −{promoByCategory[item.category].discount.value}% · {promoByCategory[item.category].title}
+                    </span>
+                  )}
                   <h3>{item.name}</h3>
                   <p className="muted">{item.description}</p>
                   <div className="product-footer">

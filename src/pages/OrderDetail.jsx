@@ -88,10 +88,27 @@ export default function OrderDetail() {
               </li>
             ))}
           </ul>
+          {order.discounts?.length > 0 && (
+            <>
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>{formatPrice(order.subtotal)}</span>
+              </div>
+              {order.discounts.map((discount) => (
+                <div key={discount.id} className="summary-row summary-discount">
+                  <span>{discount.label}</span>
+                  <span>− {formatPrice(discount.amount)}</span>
+                </div>
+              ))}
+            </>
+          )}
           <div className="summary-row summary-total">
             <span>Total</span>
             <strong>{formatPrice(order.total)}</strong>
           </div>
+          {order.loyalty?.settled && order.loyalty.pointsToEarn > 0 && (
+            <p className="order-points">⭐ +{order.loyalty.pointsToEarn} pontos de fidelidade</p>
+          )}
         </div>
 
         <div className="card">

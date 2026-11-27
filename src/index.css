@@ -123,6 +123,16 @@ button {
   margin-top: 0;
 }
 
+.btn-link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--color-primary);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .btn-small {
   padding: 8px 14px;
   font-size: 0.9rem;
@@ -214,4 +224,23 @@ button {
 .profile-note {
   margin: 12px 0 0;
   font-size: 0.85rem;
+}
+
+.tag-promo {
+  align-self: flex-start;
+  background: #fdf3e1;
+  color: #8a5a00;
+  border: 1px solid #f1d39a;
+}
+
+.summary-discount {
+  color: var(--color-success);
+  font-size: 0.9rem;
+}
+
+.order-points {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  color: #8a5a00;
+  font-weight: 600;
 }

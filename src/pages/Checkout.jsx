@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { useUnit } from '../contexts/UnitContext'
 import { useAuth } from '../contexts/AuthContext'
-import { createOrder, registerPayment } from '../services/orderService'
+import { createOrder, getOrdersByUser, registerPayment } from '../services/orderService'
+import { calculateQuote } from '../services/promotionService'
+import { getAvailableRewards, getLoyaltyAccount } from '../services/loyaltyService'
 import { requestPayment, generatePixCode } from '../services/paymentService'
 import { formatPrice, formatCardNumber, formatExpiry, onlyDigits } from '../utils/format'
 import './Checkout.css'
@@ -57,7 +59,7 @@ const methodLabels = {
 }
 
 export default function Checkout() {
-  const { items, subtotal, clearCart } = useCart()
+  const { items, clearCart } = useCart()
   const { unit } = useUnit()
   const { user } = useAuth()
   const [form, setForm] = useState(() => ({ ...initialForm, name: user ? user.name.split(' ')[0] : '' }))
@@ -67,6 +69,32 @@ export default function Checkout() {
   const [payment, setPayment] = useState(null)
   const [failMessage, setFailMessage] = useState('')
   const [copied, setCopied] = useState(false)
+  const [couponInput, setCouponInput] = useState('')
+  const [couponCode, setCouponCode] = useState('')
+  const [couponMessage, setCouponMessage] = useState('')
+  const [rewardId, setRewardId] = useState(null)
+
+  const orderHistory = user ? getOrdersByUser(user.id) : []
+  const quote = unit && items.length > 0 ? calculateQuote({ items, unit, user, couponCode, rewardId, orderHistory }) : null
+
+  function applyCoupon(e) {
+    e.preventDefault()
+    const code = couponInput.trim().toUpperCase()
+    if (!code) return
+    const preview = calculateQuote({ items, unit, user, couponCode: code, rewardId, orderHistory })
+    if (preview.couponError) {
+      setCouponMessage(preview.couponError)
+      return
+    }
+    setCouponMessage('')
+    setCouponCode(code)
+    setCouponInput('')
+  }
+
+  function removeCoupon() {
+    setCouponCode('')
+    setCouponMessage('')
+  }
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -86,7 +114,14 @@ export default function Checkout() {
     try {
       let currentOrder = order
       if (!currentOrder) {
-        currentOrder = await createOrder({ unit, items, customer: { name: form.name.trim(), userId: user?.id ?? null } })
+        currentOrder = await createOrder({
+          unit,
+          items,
+          user,
+          couponCode,
+          rewardId,
+          customer: { name: form.name.trim(), userId: user?.id ?? null },
+        })
         setOrder(currentOrder)
       }
 
@@ -118,6 +153,10 @@ export default function Checkout() {
     const formErrors = validate(form)
     setErrors(formErrors)
     if (Object.keys(formErrors).length > 0) return
+    if (!order && quote?.couponError) {
+      setCouponMessage(quote.couponError)
+      return
+    }
     pay()
   }
 
@@ -147,6 +186,12 @@ export default function Checkout() {
           <dl className="result-details">
             <dt>Total</dt>
             <dd>{formatPrice(order.total)}</dd>
+            {order.discounts?.length > 0 && (
+              <>
+                <dt>Você economizou</dt>
+                <dd>{formatPrice(order.subtotal - order.total)}</dd>
+              </>
+            )}
             <dt>Forma de pagamento</dt>
             <dd>
               {methodLabels[payment.method]}
@@ -157,6 +202,12 @@ export default function Checkout() {
             <dt>Retirada</dt>
             <dd>{order.unitName}</dd>
           </dl>
+          {order.loyalty?.pointsToEarn > 0 && (
+            <p className="points-earned">
+              ⭐ Você ganhou <strong>{order.loyalty.pointsToEarn} pontos</strong> no programa de fidelidade.{' '}
+              <Link to="/fidelidade">Ver meus pontos</Link>
+            </p>
+          )}
           <p className="muted">
             Seu pedido já foi enviado para a cozinha. Vamos chamar <strong>{order.customer.name}</strong> quando estiver
             pronto.
@@ -268,7 +319,11 @@ export default function Checkout() {
   }
 
   const orderItems = order ? order.items : items
-  const orderTotal = order ? order.total : subtotal
+  const summary = order
+    ? { subtotal: order.subtotal ?? order.total, discounts: order.discounts ?? [], total: order.total }
+    : quote
+  const account = user && quote.loyalty.member ? getLoyaltyAccount(user.id) : null
+  const rewards = account ? getAvailableRewards(account) : []
 
   return (
     <section>
@@ -385,7 +440,7 @@ export default function Checkout() {
           </fieldset>
 
           <button type="submit" className="btn checkout-submit">
-            Pagar {formatPrice(orderTotal)}
+            Pagar {formatPrice(summary.total)}
           </button>
         </form>
 
@@ -401,10 +456,106 @@ export default function Checkout() {
               </li>
             ))}
           </ul>
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span>{formatPrice(summary.subtotal)}</span>
+          </div>
+          {summary.discounts.map((discount) => (
+            <div key={discount.id} className="summary-row summary-discount">
+              <span>{discount.label}</span>
+              <span>− {formatPrice(discount.amount)}</span>
+            </div>
+          ))}
+
+          {!order && (
+            <div className="checkout-coupon">
+              {couponCode && !quote.couponError ? (
+                <div className="coupon-applied">
+                  <span>
+                    🏷️ Cupom <strong>{couponCode}</strong> aplicado
+                  </span>
+                  <button type="button" className="btn-link" onClick={removeCoupon}>
+                    Remover
+                  </button>
+                </div>
+              ) : (
+                <form className="coupon-form" onSubmit={applyCoupon}>
+                  <label htmlFor="coupon" className="sr-only">
+                    Cupom de desconto
+                  </label>
+                  <input
+                    id="coupon"
+                    placeholder="Cupom de desconto"
+                    value={couponInput}
+                    onChange={(e) => {
+                      setCouponInput(e.target.value.toUpperCase())
+                      setCouponMessage('')
+                    }}
+                    aria-invalid={!!couponMessage}
+                  />
+                  <button type="submit" className="btn btn-outline btn-small">
+                    Aplicar
+                  </button>
+                </form>
+              )}
+              {(couponMessage || (couponCode && quote.couponError)) && (
+                <span className="field-error" role="alert">
+                  {couponMessage || quote.couponError}
+                </span>
+              )}
+            </div>
+          )}
+
+          {!order && quote.loyalty.member && (
+            <fieldset className="checkout-rewards">
+              <legend>
+                Usar pontos <span className="muted">(saldo: {account.points})</span>
+              </legend>
+              <label className="reward-option">
+                <input type="radio" name="reward" checked={!rewardId} onChange={() => setRewardId(null)} />
+                Não usar agora
+              </label>
+              {rewards.map((reward) => (
+                <label key={reward.id} className={`reward-option ${reward.available ? '' : 'disabled'}`}>
+                  <input
+                    type="radio"
+                    name="reward"
+                    checked={rewardId === reward.id}
+                    disabled={!reward.available}
+                    onChange={() => setRewardId(reward.id)}
+                  />
+                  {reward.points} pontos = {formatPrice(reward.value)} de desconto
+                </label>
+              ))}
+            </fieldset>
+          )}
+
           <div className="summary-row summary-total">
             <span>Total</span>
-            <strong>{formatPrice(orderTotal)}</strong>
+            <strong>{formatPrice(summary.total)}</strong>
           </div>
+
+          {!order && (
+            <p className="checkout-points">
+              {quote.loyalty.member ? (
+                <>
+                  ⭐ Você vai ganhar <strong>{quote.loyalty.pointsToEarn} pontos</strong> com este pedido
+                  {quote.loyalty.birthday && ' (pontos em dobro no mês do seu aniversário!)'}.
+                </>
+              ) : user ? (
+                <>
+                  Ative o <Link to="/fidelidade">programa de fidelidade</Link> para ganhar pontos nos pedidos.
+                </>
+              ) : (
+                <>
+                  <Link to="/entrar" state={{ from: '/checkout' }}>
+                    Entre na sua conta
+                  </Link>{' '}
+                  para ganhar pontos com este pedido.
+                </>
+              )}
+            </p>
+          )}
         </aside>
       </div>
     </section>

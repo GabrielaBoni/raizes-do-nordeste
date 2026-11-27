@@ -10,16 +10,6 @@
   gap: 12px;
 }
 
-.btn-link {
-  border: none;
-  background: none;
-  padding: 0;
-  color: var(--color-primary);
-  font: inherit;
-  font-weight: 600;
-  text-decoration: underline;
-}
-
 .profile-form {
   margin-top: 0;
 }
@@ -224,4 +214,25 @@
   .consent-history li span:first-child {
     min-width: 130px;
   }
+}
+
+.profile-loyalty-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space);
+  color: var(--color-text);
+  text-decoration: none;
+  border-color: var(--color-secondary);
+}
+
+.profile-loyalty-link > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-loyalty-link > span:last-child {
+  font-size: 1.6rem;
+  color: var(--color-primary);
 }

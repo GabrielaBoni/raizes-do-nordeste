@@ -1,0 +1,145 @@
+.promotions-page h2 {
+  font-size: 1.15rem;
+  margin-top: 24px;
+}
+
+.promo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.promo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 4px solid var(--color-secondary);
+}
+
+.promo-card.upcoming {
+  border-top-color: var(--color-border);
+}
+
+.promo-card h3 {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+}
+
+.promo-card p {
+  margin: 0;
+}
+
+.promo-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.promo-value {
+  font-size: 1.4rem;
+  color: var(--color-primary);
+}
+
+.promo-rules {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.promo-code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.promo-code code {
+  padding: 6px 10px;
+  border: 1px dashed var(--color-primary);
+  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.promo-auto {
+  margin-top: auto !important;
+  padding-top: 8px;
+  color: var(--color-success);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.personal-offer {
+  margin-top: 8px;
+  border: 2px solid var(--color-secondary);
+  background: #fffaf1;
+}
+
+.personal-offer h2 {
+  margin-top: 0;
+}
+
+.personal-offer.locked {
+  border-style: dashed;
+  background: var(--color-surface);
+}
+
+.personal-offer-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.personal-offer-body .promo-value {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.personal-offer-body h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+
+.personal-offer-body p {
+  margin: 0;
+}
+
+.personal-offer-note {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.8rem;
+}
+
+.promo-loyalty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.promo-loyalty h2 {
+  margin: 0 0 4px;
+}
+
+.promo-loyalty p {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .promo-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .promo-loyalty {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

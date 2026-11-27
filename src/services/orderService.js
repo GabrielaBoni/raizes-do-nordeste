@@ -1,4 +1,6 @@
 import { simulateRequest, ApiError } from './api'
+import { calculateQuote } from './promotionService'
+import { settleOrderPoints } from './loyaltyService'
 
 const STORAGE_KEY = 'raizes:pedidos'
 
@@ -23,13 +25,17 @@ function generateOrderNumber() {
   return 'RN-' + Math.floor(100000 + Math.random() * 900000)
 }
 
-export function createOrder({ unit, items, customer, channel = 'app' }) {
+export function createOrder({ unit, items, customer, channel = 'app', user = null, couponCode = '', rewardId = null }) {
   return simulateRequest(() => {
     if (!items.length) {
       throw new ApiError('O carrinho está vazio', 400)
     }
 
-    const total = Math.round(items.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100) / 100
+    const orderHistory = user ? loadOrders().filter((o) => o.customer?.userId === user.id) : []
+    const quote = calculateQuote({ items, unit, user, couponCode, rewardId, orderHistory })
+    if (quote.couponError) throw new ApiError(quote.couponError, 400)
+    if (quote.rewardError) throw new ApiError(quote.rewardError, 400)
+
     const order = {
       id: generateOrderNumber(),
       unitId: unit.id,
@@ -37,7 +43,19 @@ export function createOrder({ unit, items, customer, channel = 'app' }) {
       channel,
       customer: { name: customer.name, userId: customer.userId ?? null },
       items,
-      total,
+      subtotal: quote.subtotal,
+      discounts: quote.discounts,
+      total: quote.total,
+      couponCode: quote.coupon?.code ?? null,
+      loyalty: quote.loyalty.member
+        ? {
+            userId: user.id,
+            pointsToEarn: quote.loyalty.pointsToEarn,
+            pointsToRedeem: quote.reward?.points ?? 0,
+            rewardValue: quote.reward?.value ?? 0,
+            settled: false,
+          }
+        : null,
       status: 'aguardando_pagamento',
       payment: null,
       createdAt: new Date().toISOString(),
@@ -63,6 +81,11 @@ export function registerPayment(orderId, payment) {
       status,
       payment,
       history: [...order.history, { status, at: new Date().toISOString() }],
+    }
+
+    if (status === 'recebido' && updated.loyalty && !updated.loyalty.settled) {
+      settleOrderPoints(updated)
+      updated.loyalty = { ...updated.loyalty, settled: true }
     }
 
     saveOrders(orders.map((o) => (o.id === orderId ? updated : o)))

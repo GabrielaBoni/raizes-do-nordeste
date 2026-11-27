@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { useUnit } from '../contexts/UnitContext'
+import { useAuth } from '../contexts/AuthContext'
+import { getOrdersByUser } from '../services/orderService'
+import { calculateQuote } from '../services/promotionService'
 import { formatPrice } from '../utils/format'
 import './Cart.css'
 
 export default function Cart() {
   const { items, totalItems, subtotal, addItem, decreaseItem, removeItem, clearCart, unitId } = useCart()
   const { unit } = useUnit()
+  const { user } = useAuth()
 
   if (items.length === 0) {
     return (
@@ -21,6 +25,8 @@ export default function Cart() {
       </section>
     )
   }
+
+  const quote = calculateQuote({ items, unit, user, orderHistory: user ? getOrdersByUser(user.id) : [] })
 
   return (
     <section>
@@ -61,10 +67,25 @@ export default function Cart() {
             <span>Itens</span>
             <span>{totalItems}</span>
           </div>
+          {quote.discounts.length > 0 && (
+            <>
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+              {quote.discounts.map((discount) => (
+                <div key={discount.id} className="summary-row summary-discount">
+                  <span>{discount.label}</span>
+                  <span>− {formatPrice(discount.amount)}</span>
+                </div>
+              ))}
+            </>
+          )}
           <div className="summary-row summary-total">
             <span>Total</span>
-            <strong>{formatPrice(subtotal)}</strong>
+            <strong>{formatPrice(quote.total)}</strong>
           </div>
+          <p className="muted cart-coupon-hint">Tem cupom ou pontos? Você aplica na próxima etapa.</p>
           <Link to="/checkout" className="btn">
             Finalizar pedido
           </Link>

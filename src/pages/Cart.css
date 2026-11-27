@@ -87,3 +87,9 @@
     top: 80px;
   }
 }
+
+.cart-coupon-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  text-align: center;
+}
