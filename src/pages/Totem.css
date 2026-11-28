@@ -1,0 +1,716 @@
+.totem {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.totem button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.totem-btn,
+.totem-btn-ghost {
+  min-height: 60px;
+  padding: 14px 28px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.totem-btn {
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.totem-btn:active {
+  background: var(--color-primary-dark);
+}
+
+.totem-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.totem-btn-ghost {
+  border: 2px solid var(--color-primary);
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.totem-btn-small {
+  min-height: 52px;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+.totem-error {
+  margin: 8px 0 0;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.totem-hint {
+  margin: 12px 0 0;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.totem-setup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.totem-setup-card {
+  width: 100%;
+  max-width: 640px;
+  padding: 32px;
+  border-radius: 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.totem-staff-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #2b2118;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.totem-setup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.totem-setup-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-surface);
+  text-align: left;
+}
+
+.totem-setup-list button:hover {
+  border-color: var(--color-primary);
+}
+
+.totem-setup-list span {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.totem-welcome {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px;
+  background: linear-gradient(160deg, var(--color-primary), #d9792f);
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+
+.totem-welcome-brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.totem-welcome-title {
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.totem-welcome-cta {
+  margin-top: 16px;
+  padding: 22px 48px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-primary);
+  font-size: 1.5rem !important;
+  font-weight: 800;
+  animation: totem-pulse 1.8s ease-in-out infinite;
+}
+
+.totem-welcome-unit {
+  font-weight: 600;
+}
+
+.totem-welcome-privacy {
+  position: absolute;
+  bottom: 32px;
+  left: 24px;
+  right: 24px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.totem-change-unit {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 0.8rem !important;
+}
+
+@keyframes totem-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+.totem-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.totem-header-brand {
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.totem-header .totem-btn-ghost {
+  min-height: 48px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  border-color: #fff;
+  background: transparent;
+  color: #fff;
+}
+
+.totem-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.totem-message {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+}
+
+.totem-menu-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.totem-categories {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  overflow-x: auto;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.totem-categories button {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 110px;
+  padding: 12px 14px;
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.totem-categories button.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.totem-category-icon {
+  font-size: 1.8rem;
+}
+
+.totem-products {
+  list-style: none;
+  margin: 0;
+  padding: 16px 16px 120px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+
+.totem-product {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.totem-product.unavailable {
+  opacity: 0.55;
+}
+
+.totem-product-icon {
+  font-size: 2.6rem;
+}
+
+.totem-product h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.totem-product p {
+  margin: 0 0 8px;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.totem-promo {
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fdf3e1;
+  color: #8a5a00;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.totem-product-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.totem-product-footer strong {
+  font-size: 1.25rem;
+}
+
+.totem-soldout {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.totem-qty {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 2px solid var(--color-primary);
+  border-radius: 16px;
+}
+
+.totem-qty button {
+  width: 52px;
+  height: 52px;
+  border: none;
+  background: none;
+  color: var(--color-primary);
+  font-size: 1.6rem !important;
+  font-weight: 700;
+}
+
+.totem-qty span {
+  min-width: 28px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.totem-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.totem-bar > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.totem-bar strong {
+  font-size: 1.4rem;
+}
+
+.totem-review-body {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.totem-panel {
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.totem-review-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.totem-review-items li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.totem-review-name {
+  grid-column: 1 / -1;
+  font-weight: 700;
+}
+
+.totem-review-items li strong {
+  text-align: right;
+}
+
+.totem-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.totem-totals > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.totem-discount {
+  color: var(--color-success);
+}
+
+.totem-total {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+  font-size: 1.4rem;
+}
+
+.totem-label {
+  display: block;
+  margin: 0 0 10px;
+  font-weight: 800;
+  font-size: 1.25rem;
+}
+
+.totem-panel .totem-label:not(:first-child) {
+  margin-top: 28px;
+}
+
+.totem-input {
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 18px;
+  border: 2px solid var(--color-border);
+  border-radius: 14px;
+  font: inherit;
+  font-size: 1.4rem;
+}
+
+.totem-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.totem-input[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.totem-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.totem-methods button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 22px 12px;
+  border: 2px solid var(--color-primary);
+  border-radius: 18px;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+
+.totem-methods button span {
+  font-size: 2.2rem;
+}
+
+.totem-methods button small {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.totem-methods button:active {
+  background: #fdf0ea;
+}
+
+.totem-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.totem-result {
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 28px;
+  border-radius: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.totem-result h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.totem-result p {
+  margin: 0;
+}
+
+.totem-result .totem-methods {
+  width: 100%;
+}
+
+.totem-result-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--color-primary);
+}
+
+.totem-result.success .totem-result-icon {
+  background: var(--color-success);
+}
+
+.totem-result.error .totem-result-icon {
+  background: var(--color-error);
+}
+
+.totem-ticket {
+  font-size: clamp(3.5rem, 12vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.totem-amount {
+  font-size: 1.2rem;
+}
+
+.totem-amount strong {
+  font-size: 1.6rem;
+}
+
+.totem-qrcode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 220px;
+  border: 3px dashed var(--color-text);
+  border-radius: 16px;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+
+.totem-pix-code {
+  max-width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-bg);
+  font-size: 0.75rem;
+  word-break: break-all;
+  user-select: text;
+}
+
+.totem-card-reader {
+  font-size: 5rem;
+  animation: totem-pulse 1.8s ease-in-out infinite;
+}
+
+.totem-waiting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.totem-spinner {
+  width: 26px;
+  height: 26px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: totem-spin 0.9s linear infinite;
+}
+
+@keyframes totem-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.totem-demo {
+  width: 100%;
+  padding: 14px;
+  border: 1px dashed var(--color-border);
+  border-radius: 14px;
+  background: var(--color-bg);
+  font-size: 0.95rem;
+}
+
+.totem-demo .totem-actions {
+  margin-top: 10px;
+}
+
+.totem-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.totem-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(43, 33, 24, 0.6);
+}
+
+.totem-dialog {
+  width: 100%;
+  max-width: 480px;
+  padding: 32px;
+  border-radius: 24px;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.totem-dialog h2 {
+  margin-top: 0;
+  font-size: 1.8rem;
+}
+
+@media (min-width: 900px) {
+  .totem-menu-body {
+    flex-direction: row;
+  }
+
+  .totem-categories {
+    flex-direction: column;
+    width: 200px;
+    flex-shrink: 0;
+    overflow-x: visible;
+    border-bottom: none;
+    border-right: 1px solid var(--color-border);
+    padding-bottom: 120px;
+  }
+
+  .totem-categories button {
+    min-width: 0;
+  }
+
+  .totem-products {
+    flex: 1;
+  }
+
+  .totem-review-body {
+    grid-template-columns: 3fr 2fr;
+    align-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .totem-welcome-cta,
+  .totem-card-reader {
+    animation: none;
+  }
+}
+
+.totem-review-items .totem-qty {
+  justify-self: start;
+}
